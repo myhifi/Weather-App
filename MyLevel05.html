@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Level05 Weather app</title>
+    <style>
+        /* Default text color in (Light Mode) */
+        :root {
+            --cold-color: #005b96; /* Darker blue for light background */
+            --warm-color: #2e7d32; /* Darker green */
+            --hot-color: #c62828;  /* Darker red */
+        }
+        body{
+            background-color: ivory;
+            color: black;
+            transition: all 0.4s;
+        }
+        body.darkM{
+            background-color: #115;
+            color: white;
+            /* We redefine the variables here so they "flip" automatically */
+            --cold-color: #81d4fa; /* Bright, light blue */
+            --warm-color: #a5d6a7; /* Bright, light green */
+            --hot-color: #ff8a80;  /* Bright, light red */            
+        }
+        main{text-align: center;}
+        #result{padding: 1rem;}
+        button{cursor: pointer;}
+        
+        /* 3. Apply Variables to the Title */
+        #mainTitle.hot{color: var(--hot-color);}
+        #mainTitle.warm{color: var(--warm-color);}
+        #mainTitle.cold{color: var(--cold-color);}
+
+        .weather-container {
+            display: flex;         /* Makes children sit side-by-side */
+            flex-wrap: wrap;      /* Allows wrapping on small screens (mobile) */
+            justify-content: center; /* Centers the two blocks */
+            gap: 1rem;           /* Adds a nice gap between the two divs*/
+            margin-top: 20px;
+        }
+
+        .weather-main, .weather-details {
+            /* flex: 1;               // Both divs share space equally */
+            min-width: 250px;      /* If the screen is narrower than 500px, they stack! */
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1); /* Subtle "card" look */
+        }
+        .weather-main:hover, .weather-details:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* The separator */
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button id="darkM">Light/Dark Mode</button>
+    </header>
+
+    <main>
+        <h1 id="mainTitle">🌦️My Level05 Weather app</h1>
+
+        <form id="searchForm">
+            <input type="text" id="cityInput" placeholder="Enter City" autofocus>
+            <button type="submit">Search</button>
+
+            <select id="selectCity">
+                <option value="" selected disabled>--Select a City--</option>
+                <optgroup label="Egyptian Cities">
+                    <option value="Cairo">Cairo</option>
+                    <option value="Alexandria">Alexandria</option>
+                    <option value="Giza">Giza</option>
+                    <option value="Luxor">Luxor</option>
+                    <option value="Aswan">Aswan</option>
+                </optgroup>
+
+                <optgroup label="Global Cities">
+                    <option value="London">London</option>
+                    <option value="Paris">Paris</option>
+                    <option value="New York">New York</option>
+                    <option value="Tokyo">Tokyo</option>
+                    <option value="Madrid">Madrid</option>
+                </optgroup>
+            </select>
+        </form>
+        
+        <!-- Result Section -->
+        <div id="result">Enter a City Or Choose from Menu...</div>
+    </main>
+
+    <hr>
+    <!-- History Section  -->
+    <div>
+        <button id="clearHistoryBtn">Clear History</button>
+        <ul id="historyList"></ul>
+    </div>
+    <script src="AIassets/myLevel05.js"></script>
+</body>
+</html>
