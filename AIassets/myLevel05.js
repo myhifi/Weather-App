@@ -20,6 +20,31 @@ let historyList = document.getElementById('historyList');
 // API Key
 let apiKey = "ec52575a4326f4391ce9f7394481a60e";
 
+// Map API descriptions to local SVG/PNG files in AIassets folder
+const iconMapping = {
+    "clear sky": "AIassets/sun.svg",
+    "few clouds": "AIassets/cloud-sun.svg",
+    "scattered clouds": "AIassets/cloud.svg",
+    "broken clouds": "AIassets/clouds.svg",
+    "shower rain": "AIassets/rain.svg",
+    "rain": "AIassets/cloud-rain.svg",
+    "thunderstorm": "AIassets/lightning.svg",
+    "snow": "AIassets/snow.svg",
+    "mist": "AIassets/fog.svg",
+    "fog": "AIassets/fog.svg"
+};
+
+// Fallback function triggered if the external API image fails to load
+function handleIconError(image) {
+    image.onerror = null; // Prevents infinite loops if the fallback also fails
+    const description = image.alt.toLowerCase();
+    
+    // Mapping to find a local icon, or use a generic default
+    image.src = iconMapping[description] || 'AIassets/default-weather.svg';
+    
+    console.warn(`Weather icon failed to load. Falling back to local icon for: ${description}`);
+}
+
 // getWeather function
 async function getWeather(city) {
     if(!city){
@@ -89,17 +114,22 @@ function weatherTemplate(data) {
     const temp = main.temp;
     const fahrenheit = temp * 9/5 + 32;
     const kelvin = temp + 273.15;
-
     const sunrise = new Date(sys.sunrise * 1000).toLocaleTimeString();
     const sunset  = new Date(sys.sunset * 1000).toLocaleTimeString();
 
+    // The external API URL
     const iconUrl = `https://openweathermap.org/img/wn/${weather[0].icon}@2x.png`;
 
     return `
         <div class="weather-container">
             <div class="weather-main">
                 <h2>${name}</h2>
-                <img src="${iconUrl}" alt="${weather[0].description}">
+                <img 
+                    src="${iconUrl}" 
+                    alt="${weather[0].description}" 
+                    onerror="handleIconError(this)" 
+                    style="width: 100px; height: 100px;"
+                >
                 <p>${weather[0].description}</p>
                 <p>
                     🌡️ <b>${temp}</b> °C,
